@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Portfolio</title>
+    <title>Modern Portfolio - SPA</title>
     <style>
         * {
             margin: 0;
@@ -55,6 +55,12 @@
             gap: 30px;
             margin-bottom: 50px;
             flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            z-index: 100;
         }
 
         nav a {
@@ -66,12 +72,29 @@
             transition: all 0.3s ease;
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
+            cursor: pointer;
         }
 
         nav a:hover {
             border-color: #667eea;
             background: rgba(102, 126, 234, 0.1);
             transform: translateY(-2px);
+        }
+
+        nav a.active {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .page {
+            display: none;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+            min-height: 60vh;
+        }
+
+        .page.active {
+            display: block;
         }
 
         .hero-section {
@@ -107,6 +130,8 @@
             font-size: 1.1rem;
             transition: all 0.3s ease;
             box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            cursor: pointer;
+            border: none;
         }
 
         .cta-button:hover {
@@ -154,6 +179,147 @@
             color: #a0a0a0;
             line-height: 1.6;
             font-size: 1rem;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            padding: 50px 0;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .about-text p {
+            color: #b0b0b0;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .skill-tag {
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(102, 126, 234, 0.5);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 50px 0;
+        }
+
+        .portfolio-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.2);
+        }
+
+        .portfolio-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .portfolio-info {
+            padding: 30px;
+        }
+
+        .portfolio-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .portfolio-info p {
+            color: #a0a0a0;
+            line-height: 1.6;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-form h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #b0b0b0;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
         }
 
         .floating-shapes {
@@ -232,6 +398,17 @@
             }
         }
 
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         footer {
             text-align: center;
             padding: 40px 20px;
@@ -260,6 +437,15 @@
             nav {
                 gap: 15px;
             }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -276,39 +462,176 @@
             <p class="subtitle">Modern Design • Clean Code • Creative Solutions</p>
         </header>
 
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#services">Services</a>
-            <a href="#portfolio">Portfolio</a>
-            <a href="#contact">Contact</a>
+        <nav id="nav">
+            <a data-page="home" class="active">Home</a>
+            <a data-page="about">About</a>
+            <a data-page="services">Services</a>
+            <a data-page="portfolio">Portfolio</a>
+            <a data-page="contact">Contact</a>
         </nav>
 
-        <section class="hero-section">
-            <h2>Creating Digital Experiences</h2>
-            <p>Transforming ideas into beautiful, functional, and user-friendly digital solutions. Let's build something amazing together.</p>
-            <a href="#" class="cta-button">Get Started</a>
-        </section>
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <section class="hero-section">
+                <h2>Creating Digital Experiences</h2>
+                <p>Transforming ideas into beautiful, functional, and user-friendly digital solutions. Let's build something amazing together.</p>
+                <button class="cta-button" onclick="navigateTo('contact')">Get Started</button>
+            </section>
+        </div>
 
-        <section class="cards-section">
-            <div class="card">
-                <span class="card-icon">🎨</span>
-                <h3>Design</h3>
-                <p>Beautiful, intuitive interfaces that users love. Creating visual experiences that tell your story.</p>
+        <!-- About Page -->
+        <div id="about" class="page">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About Me</h2>
+                    <p>Hi! I'm a passionate developer and designer with a love for creating beautiful, functional digital experiences. With years of experience in web development, I specialize in building modern, responsive applications that users love.</p>
+                    <p>My approach combines creative design thinking with technical expertise to deliver solutions that not only look great but also perform exceptionally well.</p>
+                    <div class="skills">
+                        <span class="skill-tag">HTML/CSS</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">UI/UX Design</span>
+                        <span class="skill-tag">Responsive Design</span>
+                        <span class="skill-tag">Web Performance</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="card">
+                        <span class="card-icon">🎯</span>
+                        <h3>Mission</h3>
+                        <p>To create digital experiences that are not only visually stunning but also intuitive and accessible to everyone.</p>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <div class="card">
-                <span class="card-icon">💻</span>
-                <h3>Development</h3>
-                <p>Clean, efficient code that brings designs to life. Building robust applications with modern technologies.</p>
-            </div>
+        <!-- Services Page -->
+        <div id="services" class="page">
+            <section class="hero-section">
+                <h2>Services</h2>
+                <p>Comprehensive solutions for all your digital needs</p>
+            </section>
+            <section class="cards-section">
+                <div class="card">
+                    <span class="card-icon">🎨</span>
+                    <h3>Design</h3>
+                    <p>Beautiful, intuitive interfaces that users love. Creating visual experiences that tell your story and engage your audience.</p>
+                </div>
 
-            <div class="card">
-                <span class="card-icon">🚀</span>
-                <h3>Optimization</h3>
-                <p>Fast, responsive, and SEO-friendly solutions. Ensuring your project performs at its best.</p>
+                <div class="card">
+                    <span class="card-icon">💻</span>
+                    <h3>Development</h3>
+                    <p>Clean, efficient code that brings designs to life. Building robust applications with modern technologies and best practices.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🚀</span>
+                    <h3>Optimization</h3>
+                    <p>Fast, responsive, and SEO-friendly solutions. Ensuring your project performs at its best across all devices and platforms.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">📱</span>
+                    <h3>Responsive Design</h3>
+                    <p>Seamless experiences across all devices. Your website will look and work perfectly on desktop, tablet, and mobile.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">🔧</span>
+                    <h3>Maintenance</h3>
+                    <p>Ongoing support and updates. Keeping your digital presence fresh, secure, and running smoothly at all times.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-icon">💡</span>
+                    <h3>Consulting</h3>
+                    <p>Expert guidance for your projects. Strategic advice to help you make the right technology decisions for your business.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Portfolio Page -->
+        <div id="portfolio" class="page">
+            <section class="hero-section">
+                <h2>Portfolio</h2>
+                <p>A showcase of recent projects and creative work</p>
+            </section>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <div class="portfolio-image">🌐</div>
+                    <div class="portfolio-info">
+                        <h3>Modern Web App</h3>
+                        <p>A sleek, responsive web application built with the latest technologies for optimal performance and user experience.</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-item">
+                    <div class="portfolio-image">📊</div>
+                    <div class="portfolio-info">
+                        <h3>Data Dashboard</h3>
+                        <p>Interactive data visualization dashboard with real-time updates and beautiful charts for business intelligence.</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-item">
+                    <div class="portfolio-image">🛒</div>
+                    <div class="portfolio-info">
+                        <h3>E-Commerce Platform</h3>
+                        <p>Full-featured online store with secure payment processing, inventory management, and customer analytics.</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-item">
+                    <div class="portfolio-image">📱</div>
+                    <div class="portfolio-info">
+                        <h3>Mobile-First Design</h3>
+                        <p>Progressive web app optimized for mobile devices with offline capabilities and native-like experience.</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-item">
+                    <div class="portfolio-image">🎮</div>
+                    <div class="portfolio-info">
+                        <h3>Interactive Experience</h3>
+                        <p>Engaging web-based game with smooth animations, responsive controls, and immersive gameplay.</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-item">
+                    <div class="portfolio-image">✨</div>
+                    <div class="portfolio-info">
+                        <h3>Brand Website</h3>
+                        <p>Corporate website with modern design, smooth animations, and compelling content presentation.</p>
+                    </div>
+                </div>
             </div>
-        </section>
+        </div>
+
+        <!-- Contact Page -->
+        <div id="contact" class="page">
+            <div class="contact-form">
+                <h2>Get In Touch</h2>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required placeholder="Your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required placeholder="What's this about?">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required placeholder="Tell me about your project..."></textarea>
+                    </div>
+                    <button type="submit" class="cta-button" style="width: 100%;">Send Message</button>
+                </form>
+            </div>
+        </div>
 
         <footer>
             <p>&copy; 2025 Modern Portfolio. All rights reserved.</p>
@@ -316,24 +639,77 @@
     </div>
 
     <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const href = this.getAttribute('href');
-                if (href.startsWith('#')) {
-                    const target = document.querySelector(href);
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
+        // SPA Navigation
+        function navigateTo(pageName) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show selected page
+            const targetPage = document.getElementById(pageName);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                
+                // Update active nav link
+                const navLinks = document.querySelectorAll('nav a');
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('data-page') === pageName) {
+                        link.classList.add('active');
                     }
-                }
+                });
+
+                // Update URL without reload
+                history.pushState({ page: pageName }, '', `#${pageName}`);
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Navigation click handlers
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = link.getAttribute('data-page');
+                navigateTo(page);
             });
         });
 
-        // Add parallax effect to floating shapes
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', (e) => {
+            if (e.state && e.state.page) {
+                navigateTo(e.state.page);
+            } else {
+                const hash = window.location.hash.replace('#', '');
+                if (hash) {
+                    navigateTo(hash);
+                } else {
+                    navigateTo('home');
+                }
+            }
+        });
+
+        // Load page from URL hash on page load
+        window.addEventListener('load', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && document.getElementById(hash)) {
+                navigateTo(hash);
+            } else {
+                navigateTo('home');
+            }
+        });
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your message! I\'ll get back to you soon.');
+            e.target.reset();
+        });
+
+        // Parallax effect for floating shapes
         document.addEventListener('mousemove', (e) => {
             const shapes = document.querySelectorAll('.shape');
             const x = e.clientX / window.innerWidth;
@@ -346,6 +722,9 @@
                 shape.style.transform = `translate(${xMove}px, ${yMove}px)`;
             });
         });
+
+        // Initialize first page state
+        history.replaceState({ page: 'home' }, '', '#home');
     </script>
 </body>
 </html>
